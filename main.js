@@ -42,11 +42,36 @@ const initMap = () => {
   });
 
   // 버튼 클릭 이벤트 리스너 등록
-  const startPointButton = document.getElementById("startPointButton");
-  startPointButton.addEventListener("click", () => setPoint({ lat: 36.67369107400314, lng: 127.48819284994991 }, 'startPoint'));
+  //하드코딩
+  // const startPointButton = document.getElementById("startPointButton");
+  // startPointButton.addEventListener("click", () => setPoint({ lat: 36.67369107400314, lng: 127.48819284994991 }, 'startPoint'));
 
-  const endPointButton = document.getElementById("endPointButton");
-  endPointButton.addEventListener("click", () => setPoint({ lat: 36.665619618444524, lng: 127.48975258952777 }, 'endPoint'));
+  // const endPointButton = document.getElementById("endPointButton");
+  // endPointButton.addEventListener("click", () => setPoint({ lat: 36.665619618444524, lng: 127.48975258952777 }, 'endPoint'));
+kakao.maps.event.addListener(startMarker, 'click', function() {
+                    infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '<br><button onclick="selectStartLocation(' + place.y + ', ' + place.x + ')">출발지 선택하기</button></div>');
+                    infowindow.open(map, marker);
+                });
+
+kakao.maps.event.addListener(endMarker, 'click', function() {
+                    infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '<br><button onclick="selectEndLocation(' + place.y + ', ' + place.x + ')">출발지 선택하기</button></div>');
+                    infowindow.open(map, marker);
+                });
+
+  function selectStartLocation(lat, lng) {
+    startCoords = {lat: lat, lng: lng};
+    document.getElementById('start-coords').textContent = '출발지 좌표: ' + lat + ', ' + lng;
+    alert('출발지 선택됨');
+    infowindow.close();
+    updatePolyline();
+}
+function selectEndLocation(lat, lng) {
+    endCoords = {lat: lat, lng: lng};
+    document.getElementById('end-coords').textContent = '도착지 좌표: ' + lat + ', ' + lng;
+    alert('도착지 선택됨');
+    infowindow.close();
+    updatePolyline();
+}
 
   const changeCenterButton = document.getElementById("changeCenterButton");
   changeCenterButton.addEventListener("click", () => changeCenter(center));
